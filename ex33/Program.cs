@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ex33
 {
@@ -20,7 +17,7 @@ namespace ex33
 
             while (isOpen)
             {
-                Console.SetCursorPosition(40, 0);
+                Console.SetCursorPosition(70, 0);
                 Console.WriteLine($"Сумма в кассе: {shopBank} $");
                 Console.SetCursorPosition(0, 0);
                 Console.Write("1 - Добавить покупателя\n2 - Рассчитать покупателя\n3 - Выход из программы\nВыберите операцию: ");
@@ -62,8 +59,10 @@ namespace ex33
         {
             if (customers.Count > 0)
             {
+                int minPurchaseAmount = 10;
+                int maxPurchaseAmount = 101;
                 Random random = new Random();
-                int purchaseAmount = random.Next(1, 1001);
+                int purchaseAmount = random.Next(minPurchaseAmount, maxPurchaseAmount);
                 Console.WriteLine($"Покупатель {customers.Dequeue()}. Сумма покупки составила {purchaseAmount} $");
                 shopBank += purchaseAmount;
             }
