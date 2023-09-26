@@ -7,21 +7,30 @@ namespace ex33
     {
         static void Main(string[] args)
         {
-            const int CommandAddCustomer = 1;
-            const int CommandCalculateCustomer = 2;
-            const int CommandExit = 3;
+            const string CommandAddCustomer = "1";
+            const string CommandCalculateCustomer = "2";
+            const string CommandExit = "3";
 
-            bool isOpen = true;
             int shopBank = 0;
-            Queue<string> customers = new Queue<string>();
+            bool isOpen = true;
+
+            Queue<int> customers = new Queue<int>();
 
             while (isOpen)
             {
+                Console.SetCursorPosition(0, 15);
+
+                foreach (var customerPurchaseAmount in customers)
+                {
+                    Console.WriteLine($"Сумма, ожидающая расчета: {customerPurchaseAmount}$");
+                }
+
                 Console.SetCursorPosition(70, 0);
                 Console.WriteLine($"Сумма в кассе: {shopBank} $");
                 Console.SetCursorPosition(0, 0);
-                Console.Write("1 - Добавить покупателя\n2 - Рассчитать покупателя\n3 - Выход из программы\nВыберите операцию: ");
-                int chosenOperation = Convert.ToInt32(Console.ReadLine());
+                Console.Write($"{CommandAddCustomer} - Добавить покупателя\n{CommandCalculateCustomer} - Рассчитать всех покупателей\n" +
+                    $"{CommandExit} - Выход из программы\nВыберите операцию: ");
+                string chosenOperation = (Console.ReadLine());
 
                 switch (chosenOperation)
                 {
@@ -42,33 +51,37 @@ namespace ex33
                         break;
                 }
 
-                Console.ReadKey();
                 Console.Clear();
             }
         }
 
-        static void AddCustomers(Queue<string> customers)
+        static void AddCustomers(Queue<int> customers)
         {
-            Console.Write("Введите имя покупателя: ");
-            string name = Console.ReadLine();
-            customers.Enqueue(name);
-            Console.WriteLine($"{name} успешно добавлен в очередь...");
+            int minPurchaseAmount = 10;
+            int maxPurchaseAmount = 101;
+            Random random = new Random();
+            int purchaseAmount = random.Next(minPurchaseAmount, maxPurchaseAmount);
+            customers.Enqueue(purchaseAmount);
+            Console.WriteLine($"Клиент с суммой покупок в {purchaseAmount}$ добавлен в очередь...");
+            Console.ReadKey();
         }
 
-        static int CalculateCustomer(Queue<string> customers, int shopBank)
+        static int CalculateCustomer(Queue<int> customers, int shopBank)
         {
             if (customers.Count > 0)
             {
-                int minPurchaseAmount = 10;
-                int maxPurchaseAmount = 101;
-                Random random = new Random();
-                int purchaseAmount = random.Next(minPurchaseAmount, maxPurchaseAmount);
-                Console.WriteLine($"Покупатель {customers.Dequeue()}. Сумма покупки составила {purchaseAmount} $");
-                shopBank += purchaseAmount;
+                for (int i = 0; i < customers.Count;)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Сумма покупок составила {customers.Peek()}$\nОбщий банк составил: {shopBank}$");
+                    shopBank += customers.Dequeue();
+                    Console.ReadKey();
+                }
             }
             else
             {
-                Console.WriteLine("Список покупателей пуст");
+                Console.WriteLine("Очередь пуста...");
+                Console.ReadKey();
             }
 
             return shopBank;
