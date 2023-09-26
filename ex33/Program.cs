@@ -62,19 +62,20 @@ namespace ex33
             Random random = new Random();
             int purchaseAmount = random.Next(minPurchaseAmount, maxPurchaseAmount);
             customers.Enqueue(purchaseAmount);
-            Console.WriteLine($"Клиент с суммой покупок в {purchaseAmount}$ добавлен в очередь...");
+            Console.Write($"Клиент с суммой покупок в {purchaseAmount}$ добавлен в очередь...");
             Console.ReadKey();
         }
 
-        static int CalculateCustomer(Queue<int> customers, int shopBank)
+        static int CalculateCustomer(Queue<int> customerPurchaseAmount, int shopBank)
         {
-            if (customers.Count > 0)
+            if (customerPurchaseAmount.Count > 0)
             {
-                for (int i = 0; i < customers.Count;)
+                for (int i = 0; i < customerPurchaseAmount.Count;)
                 {
                     Console.Clear();
-                    Console.WriteLine($"Сумма покупок составила {customers.Peek()}$\nОбщий банк составил: {shopBank}$");
-                    shopBank += customers.Dequeue();
+                    shopBank += customerPurchaseAmount.Peek();
+                    Console.WriteLine($"Сумма покупок составила {customerPurchaseAmount.Dequeue()}$\nОбщий банк составил: {shopBank}$");
+                    Console.Write("Нажмите любую клавишу для продолжения...");
                     Console.ReadKey();
                 }
             }
