@@ -7,14 +7,20 @@ namespace ex33
     {
         static void Main(string[] args)
         {
-            const string CommandAddCustomer = "1";
-            const string CommandCalculateCustomer = "2";
-            const string CommandExit = "3";
+            const string CommandCalculateCustomer = "1";
+            const string CommandExit = "2";
 
             int shopBank = 0;
+            int customersCount = 5;
             bool isOpen = true;
 
             Queue<int> customers = new Queue<int>();
+            Random random = new Random();
+
+            for (int i = 0; i < customersCount; i++)
+            {
+                customers.Enqueue(random.Next(10, 101));
+            }
 
             while (isOpen)
             {
@@ -28,16 +34,12 @@ namespace ex33
                 Console.SetCursorPosition(70, 0);
                 Console.WriteLine($"Сумма в кассе: {shopBank} $");
                 Console.SetCursorPosition(0, 0);
-                Console.Write($"{CommandAddCustomer} - Добавить покупателя\n{CommandCalculateCustomer} - Рассчитать всех покупателей\n" +
+                Console.Write($"{CommandCalculateCustomer} - Рассчитать всех покупателей\n" +
                     $"{CommandExit} - Выход из программы\nВыберите операцию: ");
                 string chosenOperation = (Console.ReadLine());
 
                 switch (chosenOperation)
                 {
-                    case CommandAddCustomer:
-                        AddCustomers(customers);
-                        break;
-
                     case CommandCalculateCustomer:
                         shopBank = CalculateCustomer(customers, shopBank);
                         break;
@@ -55,22 +57,11 @@ namespace ex33
             }
         }
 
-        static void AddCustomers(Queue<int> customers)
-        {
-            int minPurchaseAmount = 10;
-            int maxPurchaseAmount = 101;
-            Random random = new Random();
-            int purchaseAmount = random.Next(minPurchaseAmount, maxPurchaseAmount);
-            customers.Enqueue(purchaseAmount);
-            Console.Write($"Клиент с суммой покупок в {purchaseAmount}$ добавлен в очередь...");
-            Console.ReadKey();
-        }
-
         static int CalculateCustomer(Queue<int> customerPurchaseAmount, int shopBank)
         {
             if (customerPurchaseAmount.Count > 0)
             {
-                for (int i = 0; i < customerPurchaseAmount.Count;)
+                while (customerPurchaseAmount.Count > 0)
                 {
                     Console.Clear();
                     shopBank += customerPurchaseAmount.Peek();
